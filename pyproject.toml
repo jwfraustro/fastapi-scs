@@ -18,8 +18,12 @@ dependencies = [
     "fastapi_restful<=0.5.0",
     "pydantic-settings",
     "typing_inspect",
-    "uvicorn"
-    ]
+    "uvicorn",
+    "psycopg2-binary",
+    "sqlalchemy",
+    "astropy"
+]
+
 
 classifiers = [
 

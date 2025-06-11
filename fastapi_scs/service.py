@@ -2,10 +2,43 @@
 
 Implementors should extend this module to define their own service logic.
 """
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
+import io
+from astropy.io.votable.tree import VOTableFile, Resource, Table, Field
+from astropy.io.votable import from_table, writeto
+from astropy.table import Table as AstroTable
+from fastapi.responses import Response
+from fastapi_scs.responses import XMLResponse
 
+def generate_votable(rows: list[dict]) -> Response:
+    """Generate a basic VOTable for the conesearch results."""
 
-def perform_conesearch(ra: float, dec: float, sr: float, verb: int):
+    table = AstroTable(rows)
+    votable: VOTableFile = from_table(table)
+
+    for field in votable.get_first_table().fields:
+        if field.ID == "ra":
+            field.ucd = "POS_EQ_RA_MAIN"
+            field.datatype = "double"
+        elif field.ID == "dec":
+            field.ucd = "POS_EQ_DEC_MAIN"
+            field.datatype = "double"
+        elif field.ID == "id":
+            field.ucd = "ID_MAIN"
+            field.datatype = "int"
+        elif field.ID == "flux":
+            field.ucd = "phot.flux"
+            field.datatype = "double"
+
+    buffer = io.BytesIO()
+    writeto(votable, buffer)
+    buffer.seek(0)
+
+    return XMLResponse(content=buffer.read())
+
+def perform_conesearch(session: Session, ra: float, dec: float, sr: float, verb: int):
     """
     Perform a cone search based on the provided coordinates and radius.
 
@@ -18,5 +51,15 @@ def perform_conesearch(ra: float, dec: float, sr: float, verb: int):
     Returns:
         dict: Search results.
     """
-    # Placeholder for actual search logic
-    return {"ra": ra, "dec": dec, "radius": sr, "verb": verb}
+    # Example conesearch with postgres
+
+    query = text("""
+                 SELECT * FROM sources
+                 WHERE q3c_radial_query(ra, dec, :ra, :dec, :sr)
+                 """)
+    result = session.execute(query, {"ra": ra, "dec": dec, "sr": sr})
+    rows = result.mappings().all()
+
+    votable_response = generate_votable(rows)
+
+    return votable_response
