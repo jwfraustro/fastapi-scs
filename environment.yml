@@ -1,0 +1,10 @@
+name: "fastapi-scs"
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python>=3.11,<3.13
+  - pip<25.1 # pip25.1 has compatibility issues with pip-tools
+  - wheel
+  - pip:
+      - pip-tools

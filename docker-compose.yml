@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  fastapi-scs:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    command: uvicorn fastapi_scs.main:app --host 0.0.0.0 --port 8000

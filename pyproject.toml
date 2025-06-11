@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastapi-scs"
+version = "0.1.0"
+authors = [
+    {name = "Joshua Fraustro", email="jfraustro@stsci.edu"},
+]
+description = "FastAPI implementation of the IVOA Simple Cone Search pattern"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi==0.103",
+    "pydantic<2.6",
+    "fastapi_restful<=0.5.0",
+    "pydantic-settings",
+    "typing_inspect",
+    "uvicorn"
+    ]
+
+classifiers = [
+
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+
+    "License :: OSI Approved :: MIT License",
+]
+keywords = [
+    "ivoa",
+    "fastapi",
+    "scs",
+    "cone search",
+    "astronomy",
+    ]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov"]
+dev = ["pylint", "ruff", "pre-commit"]
+docs = ["sphinx", "sphinx_design", "furo", "sphinx-copybutton", "toml", "sphinx_autodoc_typehints"]
+
+[project.urls]
+Homepage = "https://github.com/jwfraustro/fastapi-scs"
+Issues = "https://github.com/jwfraustro/fastapi-scs/issues"
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["docs/conf.py"]
