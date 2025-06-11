@@ -2,15 +2,18 @@
 
 Implementors should extend this module to define their own service logic.
 """
+
+import io
+
+from astropy.io.votable import from_table, writeto
+from astropy.io.votable.tree import VOTableFile
+from astropy.table import Table as AstroTable
+from fastapi.responses import Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-import io
-from astropy.io.votable.tree import VOTableFile, Resource, Table, Field
-from astropy.io.votable import from_table, writeto
-from astropy.table import Table as AstroTable
-from fastapi.responses import Response
 from fastapi_scs.responses import XMLResponse
+
 
 def generate_votable(rows: list[dict]) -> Response:
     """Generate a basic VOTable for the conesearch results."""
@@ -25,9 +28,9 @@ def generate_votable(rows: list[dict]) -> Response:
         elif field.ID == "dec":
             field.ucd = "POS_EQ_DEC_MAIN"
             field.datatype = "double"
-        elif field.ID == "id":
+        elif field.ID == "name":
             field.ucd = "ID_MAIN"
-            field.datatype = "int"
+            field.datatype = "char"
         elif field.ID == "flux":
             field.ucd = "phot.flux"
             field.datatype = "double"
@@ -37,6 +40,7 @@ def generate_votable(rows: list[dict]) -> Response:
     buffer.seek(0)
 
     return XMLResponse(content=buffer.read())
+
 
 def perform_conesearch(session: Session, ra: float, dec: float, sr: float, verb: int):
     """
