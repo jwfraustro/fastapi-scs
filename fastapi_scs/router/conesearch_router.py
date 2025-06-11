@@ -36,7 +36,7 @@ class ConeSearchRouter:
             verb (int): Verbosity level (1, 2, or 3).
 
         Returns:
-            JSON response with search results.
+            VOTable response with the query results.
         """
 
         # Placeholder for actual search logic
