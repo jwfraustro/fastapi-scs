@@ -1,11 +1,11 @@
-FROM postgres:15
+FROM postgres:16
 
 # Install build tools and required libraries
 RUN apt-get update && apt-get install -y \
     git \
     make \
     gcc \
-    postgresql-server-dev-15 \
+    postgresql-server-dev-16 \
     libzstd-dev \
     liblz4-dev \
     zlib1g-dev \
