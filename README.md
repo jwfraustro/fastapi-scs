@@ -2,10 +2,12 @@
 
 This project is a Python implementation of the IVOA Simple Cone Search (SCS) standard using [FastAPI](https://fastapi.tiangolo.com/).
 
+This minimal example has been validated by both VOParis and ESA Euro-VO tools and is compliant with the IVOA SCS standard.
+
 ## Features
 
 - Implements the IVOA SCS protocol.
-- Includes simulated data via a PostgreSQL database for testing.
+- Includes simulated data via a PostgreSQL+Q3C database for testing.
 
 ## Getting Started
 
