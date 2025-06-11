@@ -17,4 +17,4 @@ RUN git clone https://github.com/segasai/q3c.git /q3c \
     && cd /q3c && make && make install \
     && rm -rf /q3c
 
-COPY ../init-db /docker-entrypoint-initdb.d
+COPY init-db/ /docker-entrypoint-initdb.d

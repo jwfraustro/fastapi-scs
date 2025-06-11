@@ -13,7 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./init-db:/docker-entrypoint-initdb.d
+      - ./postgres-q3c/init-db:/docker-entrypoint-initdb.d
 
   fastapi-scs:
     build: .
