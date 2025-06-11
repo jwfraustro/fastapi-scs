@@ -9,7 +9,7 @@ VOTABLE_ERROR_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <VOTABLE version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.ivoa.net/xml/VOTable/v1.1"
   xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.1 http://www.ivoa.net/xml/VOTable/v1.1">
-  <DESCRIPTION>MAST Simple Cone Search Service</DESCRIPTION>
+  <DESCRIPTION>Simple Cone Search Service</DESCRIPTION>
   <INFO ID="Error" name="Error" value="{error}"/>
 </VOTABLE>"""
 
