@@ -7,7 +7,7 @@ import io
 
 from astropy.io.votable import from_table, writeto
 from astropy.io.votable.tree import VOTableFile
-from astropy.table import Table as AstroTable
+from astropy.table import Table
 from fastapi.responses import Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -18,7 +18,7 @@ from fastapi_scs.responses import XMLResponse
 def generate_votable(rows: list[dict]) -> Response:
     """Generate a basic VOTable for the conesearch results."""
 
-    table = AstroTable(rows)
+    table = Table(rows)
     votable: VOTableFile = from_table(table)
 
     for field in votable.get_first_table().fields:
