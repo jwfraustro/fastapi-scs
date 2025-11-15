@@ -59,7 +59,7 @@ def perform_conesearch(session: Session, ra: float, dec: float, sr: float, verb:
 
     query = text("""
                  SELECT * FROM sources
-                 WHERE q3c_radial_query(ra, dec, :ra, :dec, :sr)
+                 WHERE coord @ scircle(spoint(:ra, :dec), :radius);
                  """)
     result = session.execute(query, {"ra": ra, "dec": dec, "sr": sr})
     rows = result.mappings().all()

@@ -3,8 +3,8 @@ version: '3.8'
 services:
   db:
     build:
-      context: ./postgres-q3c
-    container_name: postgres-q3c
+      context: ./postgres-pgsphere
+    container_name: postgres-pgsphere
     environment:
       POSTGRES_DB: conesearch
       POSTGRES_USER: postgres
@@ -13,7 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./postgres-q3c/init-db:/docker-entrypoint-initdb.d
+      - ./postgres-pgsphere/init-db:/docker-entrypoint-initdb.d
 
   fastapi-scs:
     build: .
