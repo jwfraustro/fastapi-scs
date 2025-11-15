@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     """The settings for the application."""
 
     # DB Settings
-    DATABASE_URL: str = os.environ.get("DATABASE_URL")
+    DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
 
     class Config:
         """The configuration for the settings."""
