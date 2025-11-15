@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS sources (
     ra DOUBLE PRECISION NOT NULL,
     dec DOUBLE PRECISION NOT NULL,
     flux DOUBLE PRECISION,
-    name TEXT
+    name TEXT,
+    coord spoint
 );
 
 -- Populate with dummy data
@@ -16,3 +17,10 @@ SELECT
     random() * 1000,
     md5(random()::text)
 FROM generate_series(1, 1000);
+
+UPDATE sources
+SET coord = spoint(ra, dec);
+
+CREATE INDEX sources_coord_idx ON sources USING GIST (coord);
+
+
