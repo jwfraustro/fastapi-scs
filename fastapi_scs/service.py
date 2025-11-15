@@ -55,11 +55,11 @@ def perform_conesearch(session: Session, ra: float, dec: float, sr: float, verb:
     Returns:
         dict: Search results.
     """
-    # Example conesearch with postgres
 
+    # Example conesearch with postgres & pgsphere
     query = text("""
                  SELECT * FROM sources
-                 WHERE coord @ scircle(spoint(:ra, :dec), :radius);
+                 WHERE coord @ scircle(spoint(:ra, :dec), :sr);
                  """)
     result = session.execute(query, {"ra": ra, "dec": dec, "sr": sr})
     rows = result.mappings().all()
