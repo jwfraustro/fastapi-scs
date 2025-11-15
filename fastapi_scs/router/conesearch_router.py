@@ -22,7 +22,7 @@ class ConeSearchRouter:
         self,
         ra: float = Query(..., description="Right Ascension in degrees", ge=0., le=360., alias="RA"),
         dec: float = Query(..., description="Declination in degrees", ge=-90., le=90., alias="DEC"),
-        sr: float = Query(..., description="Search radius in arcseconds", alias="SR"),
+        sr: float = Query(..., description="Search radius in arcseconds", le=0.5, alias="SR"),
         verb: int = Query(1, description="Verbosity level", ge=1, le=3, alias="VERB"),
         session: Session = Depends(get_session)
     ):
