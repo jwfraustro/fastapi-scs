@@ -25,7 +25,8 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql://postgres:password@db:5432/conesearch
-    command: uvicorn fastapi_scs.main:app --host 0.0.0.0 --port 8000
+      PORT: 8000
+    command: bash -c 'uvicorn fastapi_scs.main:app --host 0.0.0.0 --port ${PORT}'
 
 volumes:
   pgdata:

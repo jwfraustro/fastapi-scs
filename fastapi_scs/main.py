@@ -8,8 +8,11 @@ from fastapi_scs.exceptions import general_exception_handler, http_exception_han
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 
+from fastapi_scs.settings import get_settings
+
 app = FastAPI(title="Simple Cone Search API",
               description="A simple API for performing cone searches on astronomical data.",
+              root_path=get_settings().ROOT_PATH,
              version="1.0.0")
 
 # Middleware to convert all query parameter names to uppercase

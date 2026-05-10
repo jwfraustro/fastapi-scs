@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     # DB Settings
     DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
+    ROOT_PATH: str = os.getenv("ROOT_PATH", "")
 
     class Config:
         """The configuration for the settings."""
