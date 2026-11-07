@@ -13,10 +13,6 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
     ROOT_PATH: str = os.getenv("ROOT_PATH", "")
 
-    # Where the SCS 1.1 application is mounted. The SCS 1.1 OpenAPI document declares
-    # `servers: [{url: /cone}]` and `paths: /search`, so by default the query endpoint is /cone/search.
-    SCS_BASE_PATH: str = "/cone"
-
     # Largest search radius (decimal degrees) accepted; corresponds to maxSR in the registry capability.
     MAX_SR: float = 0.1
 

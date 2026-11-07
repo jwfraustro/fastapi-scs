@@ -8,7 +8,7 @@ This minimal example has been validated by both VOParis and ESA Euro-VO tools an
 
 ## Features
 
-- Implements the IVOA SCS 1.1 protocol (`GET /cone/search`).
+- Implements the IVOA SCS 1.1 protocol (`GET /search`).
 - Parameters `RA`, `DEC`, `SR` (decimal degrees), plus DALI `MAXREC` and `RESPONSEFORMAT`, and `VERB` (default 2).
 - VOTable responses (`application/x-votable+xml`) with `QUERY_STATUS` (`OK`/`OVERFLOW`) and the SCS 1.1 UCD1+ columns.
 - `SR=0` and `MAXREC=0` return the response metadata only.
@@ -23,8 +23,7 @@ Settings are read from environment variables (or a `.env` file):
 | Setting | Default | Meaning |
 |---|---|---|
 | `DATABASE_URL` | | SQLAlchemy database URL |
-| `ROOT_PATH` | | Path prefix when served behind a proxy |
-| `SCS_BASE_PATH` | `/cone` | Where the SCS application is mounted (the `servers` URL in the SCS 1.1 OpenAPI) |
+| `ROOT_PATH` | | Path prefix when served behind a proxy; it appears as the `servers` URL in the generated OpenAPI |
 | `MAX_SR` | `0.1` | Largest accepted search radius, in degrees (maxSR) |
 | `DEFAULT_MAXREC` | `1000` | Row limit when `MAXREC` is not given |
 | `MAX_MAXREC` | `10000` | Hard row limit |
@@ -33,9 +32,9 @@ Settings are read from environment variables (or a `.env` file):
 
 ## Getting Started
 
-Running the project with docker-compose is the recommended way to get started quickly. It sets up a PostgreSQL database with simulated data and runs the FastAPI application. By default, the api will be available at `http://localhost:8000/cone/search`, e.g. `http://localhost:8000/cone/search?RA=180&DEC=0&SR=0.1`.
+Running the project with docker-compose is the recommended way to get started quickly. It sets up a PostgreSQL database with simulated data and runs the FastAPI application. By default, the api will be available at `http://localhost:8000/search`, e.g. `http://localhost:8000/search?RA=180&DEC=0&SR=0.1`.
 
-Interactive Swagger documentation is available at `http://localhost:8000/cone/docs`, and the generated OpenAPI document at `http://localhost:8000/cone/openapi.json`.
+Interactive Swagger documentation is available at `http://localhost:8000/docs`, and the generated OpenAPI document at `http://localhost:8000/openapi.json`.
 
 ### Requirements
 

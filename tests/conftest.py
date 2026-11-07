@@ -12,7 +12,7 @@ import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 from fastapi_scs.dependencies import get_session  # noqa: E402
-from fastapi_scs.main import app, scs_app  # noqa: E402
+from fastapi_scs.main import app  # noqa: E402
 
 FAKE_ROWS = [
     {"name": f"src{i}", "ra": 10.0 + i * 0.001, "dec": 20.0, "flux": float(i), "id": i} for i in range(5)
@@ -52,9 +52,9 @@ class FakeSession:
 def fake_session():
     """A fake session injected in place of the database."""
     session = FakeSession()
-    scs_app.dependency_overrides[get_session] = lambda: session
+    app.dependency_overrides[get_session] = lambda: session
     yield session
-    scs_app.dependency_overrides.clear()
+    app.dependency_overrides.clear()
 
 
 @pytest.fixture

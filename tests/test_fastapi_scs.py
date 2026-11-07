@@ -7,7 +7,7 @@ from astropy.io.votable import parse
 
 from fastapi_scs.settings import get_settings
 
-SEARCH = "/cone/search"
+SEARCH = "/search"
 VALID = "RA=10&DEC=20&SR=0.05"
 
 
@@ -37,7 +37,7 @@ def ucds(response):
 
 
 def test_search_endpoint_path(client):
-    """The query endpoint is /search under the /cone server URL."""
+    """The query endpoint is /search relative to the service's base URL."""
     assert client.get(f"{SEARCH}?{VALID}").status_code == 200
     assert client.get(f"/conesearch?{VALID}").status_code == 404
 
@@ -181,10 +181,9 @@ def test_server_error_is_plain_text(client, fake_session, monkeypatch):
 
 
 def test_openapi_document_shape(client):
-    """The generated OpenAPI mirrors the SCS 1.1 document: /cone server, /search path, 200 + 400 only."""
-    spec = client.get("/cone/openapi.json").json()
+    """The generated OpenAPI mirrors the SCS 1.1 document: a /search path with 200 and 400 responses only."""
+    spec = client.get("/openapi.json").json()
     assert spec["info"]["version"] == "1.1"
-    assert {"url": "/cone"} in spec["servers"]
     operation = spec["paths"]["/search"]["get"]
     assert [p["name"] for p in operation["parameters"]] == ["RA", "DEC", "SR", "MAXREC", "RESPONSEFORMAT", "VERB"]
     assert set(operation["responses"]) == {"200", "400"}
