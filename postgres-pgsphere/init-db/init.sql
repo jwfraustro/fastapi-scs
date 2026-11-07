@@ -19,7 +19,7 @@ SELECT
 FROM generate_series(1, 1000);
 
 UPDATE sources
-SET coord = spoint(ra, dec);
+SET coord = spoint(radians(ra), radians(dec));
 
 CREATE INDEX sources_coord_idx ON sources USING GIST (coord);
 

@@ -152,11 +152,12 @@ def perform_conesearch(  # pylint: disable=too-many-arguments
     if sr == 0 or maxrec == 0:
         return columns, [], False
 
-    # Example conesearch with postgres & pgsphere. One extra row is fetched to detect overflow.
+    # Example conesearch with postgres & pgsphere, which works in radians.
+    # One extra row is fetched to detect overflow.
     column_list = ", ".join(column.name for column in columns)
     query = text(f"""
                  SELECT {column_list} FROM sources
-                 WHERE coord @ scircle(spoint(:ra, :dec), :sr)
+                 WHERE coord @ scircle(spoint(radians(:ra), radians(:dec)), radians(:sr))
                  LIMIT :limit;
                  """)  # nosec B608 - column names come from COLUMNS, not from the request
     result = session.execute(query, {"ra": ra, "dec": dec, "sr": sr, "limit": maxrec + 1})
