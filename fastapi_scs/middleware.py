@@ -10,8 +10,11 @@ from urllib.parse import urlencode
 class UppercaseQueryParamsMiddleware(BaseHTTPMiddleware):
     """Middleware to convert all query parameter names to uppercase.
 
-    The DALI spec requires that query parameter names are case-insensitive,
-    and this middleware ensures that all query parameter names are converted to uppercase for consistency.
+    Before DALI-1.2, query parameter names were case-insensitive; this middleware converts all
+    query parameter names to uppercase so that legacy clients keep working.
+
+    DALI-1.2 makes parameter names case-sensitive (the OpenAPI definition is definitive), so for
+    SCS 1.1 this is only installed when Settings.CASE_INSENSITIVE_PARAMS is enabled.
     """
     def __init__(self, app: ASGIApp):
         super().__init__(app)

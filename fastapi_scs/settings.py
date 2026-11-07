@@ -13,6 +13,26 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.environ.get("DATABASE_URL", "")
     ROOT_PATH: str = os.getenv("ROOT_PATH", "")
 
+    # Where the SCS 1.1 application is mounted. The SCS 1.1 OpenAPI document declares
+    # `servers: [{url: /cone}]` and `paths: /search`, so by default the query endpoint is /cone/search.
+    SCS_BASE_PATH: str = "/cone"
+
+    # Largest search radius (decimal degrees) accepted; corresponds to maxSR in the registry capability.
+    MAX_SR: float = 0.1
+
+    # DALI MAXREC handling: the limit applied when the client does not send MAXREC,
+    # and the hard ceiling applied to whatever the client asks for.
+    DEFAULT_MAXREC: int = 1000
+    MAX_MAXREC: int = 10000
+
+    # DALI-1.2 makes parameter names case-sensitive. Set this to True to accept any case
+    # (the SCS 1.0 / pre-DALI-1.2 behaviour) for old clients.
+    CASE_INSENSITIVE_PARAMS: bool = False
+
+    # SCS 1.1 says unknown parameters "can" be ignored (with an INFO name="warning" in the response),
+    # while DALI-1.2 says services "must" reject them. False follows SCS 1.1, True follows DALI-1.2.
+    REJECT_UNKNOWN_PARAMS: bool = False
+
     class Config:
         """The configuration for the settings."""
 

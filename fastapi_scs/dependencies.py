@@ -1,17 +1,19 @@
 """This module contains dependencies for connecting the application to the database."""
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-import os
-from contextlib import contextmanager
+from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+from fastapi_scs.settings import get_settings
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(get_settings().DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
-@contextmanager
+
 def get_session():
+    """Yield a database session for the duration of a request.
+
+    FastAPI handles generator dependencies itself, so this must not be wrapped in @contextmanager.
+    """
     db = SessionLocal()
     try:
         yield db

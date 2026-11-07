@@ -1,49 +1,34 @@
-"""Exceptions for FastAPI SCS."""
+"""Exceptions for FastAPI SCS.
 
-from fastapi.responses import Response
+SCS 1.1 defers error documents to DALI, and the SCS 1.1 OpenAPI document references the VOSI
+standard `bad-request` response, which is text/plain. DALI-1.2 also strongly recommends text/plain
+error documents, so every error here is a plain-text body with an appropriate HTTP status code.
+"""
 
-from fastapi_scs.responses import XMLResponse
-
-# A boilerplate VOTable error response
-VOTABLE_ERROR_XML = """<?xml version="1.0" encoding="UTF-8"?>
-<VOTABLE version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://www.ivoa.net/xml/VOTable/v1.1"
-  xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.1 http://www.ivoa.net/xml/VOTable/v1.1">
-  <DESCRIPTION>Simple Cone Search Service</DESCRIPTION>
-  <INFO ID="Error" name="Error" value="{error}"/>
-</VOTABLE>"""
-
-# Error handlers
+from fastapi.responses import PlainTextResponse
 
 
-def votable_error_response(message: str, status_code: int) -> Response:
-    """Create a VOTable error response.
+def error_response(message: str, status_code: int) -> PlainTextResponse:
+    """Create a plain-text DALI error response."""
+    return PlainTextResponse(content=message + "\n", status_code=status_code)
 
-    INFO element containing the error as preferred by https://www.ivoa.net/documents/REC/DAL/ConeSearch-20080222.html
-    """
-    xml_response = XMLResponse(content=VOTABLE_ERROR_XML.format(error=message), status_code=status_code)
-    return xml_response
 
-async def general_exception_handler(request, exc) -> XMLResponse:  # pylint: disable=unused-argument
+async def general_exception_handler(request, exc) -> PlainTextResponse:  # pylint: disable=unused-argument
     """
     General exception handler for unhandled exceptions.
     """
-
-    # Throw a generic error message
-    error_str = "An unexpected error occurred. Please try again later."
-    return votable_error_response(error_str, 500)
+    return error_response("An unexpected error occurred. Please try again later.", 500)
 
 
-async def http_exception_handler(request, exc):
+async def http_exception_handler(request, exc) -> PlainTextResponse:  # pylint: disable=unused-argument
     """StarletteHTTPException handler"""
-
-    error_str = exc.detail.replace("\n", " ").strip()
-    return votable_error_response(error_str, exc.status_code)
+    return error_response(str(exc.detail).replace("\n", " ").strip(), exc.status_code)
 
 
-async def validation_exception_handler(request, exc) -> XMLResponse:  # pylint: disable=unused-argument
-    """Exception handler for request validation errors."""
-
-    errors = exc.errors()
-    error_str = ", ".join([f"Error in {e['loc'][0]} {e['loc'][1]}: {e['msg']}" for e in errors])
-    return votable_error_response(error_str, 400)
+async def validation_exception_handler(request, exc) -> PlainTextResponse:  # pylint: disable=unused-argument
+    """Exception handler for request validation errors (missing, unparseable or out-of-range parameters)."""
+    messages = []
+    for error in exc.errors():
+        param = error["loc"][-1] if error["loc"] else "request"
+        messages.append(f"Invalid value for parameter {param}: {error['msg']}")
+    return error_response("; ".join(messages), 400)
