@@ -1,7 +1,7 @@
 """This module contains the settings for the application."""
 
-from functools import lru_cache
 import os
+from functools import lru_cache
 
 from pydantic_settings import BaseSettings
 
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     ROOT_PATH: str = os.getenv("ROOT_PATH", "")
 
     # Largest search radius (decimal degrees) accepted; corresponds to maxSR in the registry capability.
-    MAX_SR: float = 0.1
+    MAX_SR: float = 10.0
 
     # DALI MAXREC handling: the limit applied when the client does not send MAXREC,
     # and the hard ceiling applied to whatever the client asks for.

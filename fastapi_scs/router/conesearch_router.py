@@ -51,6 +51,7 @@ class ConeSearchRouter:
             alias="RA",
             ge=0.0,
             le=360.0,
+            example=180.0,
             description="Right ascension (ICRS) of the centre of the cone, in decimal degrees",
         ),
         dec: float = Query(
@@ -58,12 +59,14 @@ class ConeSearchRouter:
             alias="DEC",
             ge=-90.0,
             le=90.0,
+            example=0.0,
             description="Declination (ICRS) of the centre of the cone, in decimal degrees",
         ),
         sr: float = Query(
             ...,
             alias="SR",
             ge=0.0,
+            example=1,
             le=settings.MAX_SR,
             description=(
                 "Radius of the cone, in decimal degrees. SR=0 returns only the metadata of the response, "
